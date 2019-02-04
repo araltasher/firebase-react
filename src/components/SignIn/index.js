@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom';
 import {compose} from 'recompose';
 
 import {SignUpLink} from '../SignUp';
+import {PasswordForgetLink} from '../PasswordForget';
 import {withFirebase} from '../Firebase';
 import '../SignUp/Signup.scss';
 
@@ -90,6 +91,7 @@ class SignInFormBase extends Component {
 					</div>
 				</div>
 				<SignUpLink />
+				<PasswordForgetLink />
 			</div>
 			
 		);
