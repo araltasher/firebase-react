@@ -129,6 +129,13 @@ $gutters: 24px;
         background: $white;
         color: $accent;
       }
+
+      &:disabled,
+      &[disabled] {
+        background-color: #cccccc;
+        color: #a5a5a5;
+        cursor: not-allowed;
+      }
     }
   }
 
