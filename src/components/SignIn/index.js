@@ -92,6 +92,7 @@ class SignInFormBase extends Component {
 				</div>
 				<SignUpLink />
 				<PasswordForgetLink />
+				<br/>
 			</div>
 			
 		);

@@ -137,6 +137,16 @@ table {
   border-spacing: 0;
 }
 
+h1 {
+  font-size: 3rem;
+  line-height: 1.6;
+  margin: 0.8rem 0;
+  span {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -158,4 +168,7 @@ code {
 }
 
 $primary-color: #525dce;
-$primary-background: #222;
+$primary-color-lighter: #007fff;
+$secondary-color: #1affd5;
+$tertiary-color: #ea526f;
+$primary-background: #31393c;

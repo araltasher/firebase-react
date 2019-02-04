@@ -60,7 +60,7 @@ class SignUpFormBase extends Component {
 			<div className="form">
 				<div className = "form-panel">
 					<div className="form-header">
-      					<h1>Sign Up</h1>
+      					<h1>Register</h1>
     				</div>
     			<div className="form-content">
 						<form onSubmit={this.onSubmit}>

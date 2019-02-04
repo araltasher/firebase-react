@@ -12,7 +12,7 @@ $ultra: 800;
 $base-line-height: 1.6em;
 
 // Colors
-$black: #000000;
+$black: $primary-background;
 $dark-gray: rgba($black, 0.8);
 $gray: rgba($black, 0.6);
 $light-gray: rgba($black, 0.4);
@@ -47,13 +47,15 @@ $gutters: 24px;
   overflow: hidden;
 
   .err {
-    color: red;
+    color: $tertiary-color;
     font-weight: $semibold;
     margin-bottom: 1.3rem;
+    padding: 0.5rem 0 1rem 0;
   }
 
   p {
-    padding: 0 4rem 2rem 4rem;
+    padding: 0rem 4rem 1rem 4rem;
+    line-height: 1.6;
   }
 
   &-group {
@@ -124,10 +126,11 @@ $gutters: 24px;
       line-height: inherit;
       text-transform: uppercase;
       cursor: pointer;
+      transition: all ease-in 0.3s;
 
-      .two & {
-        background: $white;
-        color: $accent;
+      &.button-green {
+        background: $secondary-color;
+        color: #292929;
       }
 
       &:disabled,
@@ -141,7 +144,7 @@ $gutters: 24px;
 
   // Panel
   &-panel {
-    padding: 60px calc(5% + 60px) 60px 60px;
+    padding: 30px calc(5% + 60px) 60px 60px;
     box-sizing: border-box;
     &:before {
       @extend .overlay;

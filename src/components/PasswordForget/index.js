@@ -47,7 +47,7 @@ class PasswordForgetFormBase extends Component {
 			<div className="form">
 				<div className = "form-panel">
 					<div className="form-header">
-						<h1>Sign In</h1>
+						<h1>Reset Password</h1>
 					</div>
 				<div className="form-content">
 						<form onSubmit={this.onSubmit}>
@@ -64,7 +64,7 @@ class PasswordForgetFormBase extends Component {
 							</div>
 						
 							<div className="form-group">
-								<button disabled={isInvalid} type="submit">Reset Password</button>
+								<button className="button-green"disabled={isInvalid} type="submit">Reset Password</button>
 							</div>
 						</form>
 					</div>
