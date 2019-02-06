@@ -6,6 +6,7 @@ import {withFirebase} from '../Firebase';
 import './Signup.scss';
 
 import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
 
 const SignUp = () => (
 	<div>
@@ -18,6 +19,7 @@ const INITIAL_STATE = {
 	email: '',
 	password: '',
 	passwordConfirm: '',
+	isAdmin: false,
 	error: null
 }
 
@@ -29,10 +31,22 @@ class SignUpFormBase extends Component {
 	}
 
 	onSubmit = e => {
-		const {username, email, password} = this.state;
-		console.log(username);
+		const {username, email, password, isAdmin} = this.state;
+		const roles =[];
 		
+		if (isAdmin) {
+			roles.push(ROLES.ADMIN);
+		}
 		this.props.firebase.doCreateUserWithEmailAndPassword(email,password).then(authUser => {
+			//	Create the user in Firebase DB
+			return this.props.firebase
+					.user(authUser.user.uid)
+					.set({
+						username,
+						email,
+						roles
+					});
+		}).then(()=>{
 			this.setState({...INITIAL_STATE});
 			this.props.history.push(ROUTES.HOME);
 		}).catch(error => {
@@ -45,6 +59,9 @@ class SignUpFormBase extends Component {
 		this.setState({[e.target.name]: e.target.value});
 	}	
 
+	onChangeCheckbox = e => {
+		this.setState({[e.target.name]: e.target.checked});
+	};
 
 	render() {
 		const {
@@ -52,6 +69,7 @@ class SignUpFormBase extends Component {
 			email,
 			password,
 			passwordConfirm,
+			isAdmin,
 			error} = this.state;
 
 			const isInvalid = password !== passwordConfirm || password === '' || email === '' || username === '';
@@ -99,6 +117,15 @@ class SignUpFormBase extends Component {
 									value={passwordConfirm}
 									onChange={this.onChange}
 									type="password"
+								/>
+							</div>
+							<div className="form-group">
+								<label>Admin</label>
+								<input
+									name="isAdmin"
+									checked={isAdmin}
+									onChange={this.onChangeCheckbox}
+									type="checkbox"
 								/>
 							</div>
 							<div className="form-group">
