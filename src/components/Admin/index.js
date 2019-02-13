@@ -57,10 +57,14 @@ class Admin extends Component {
 	}
 }
 
+const listStyle = {
+	marginBottom: '2rem',
+}
+
 const UserList = ({users}) => (
 	<ul>
 		{users.map(user => (
-			<li key={user.uid}>
+			<li style={listStyle} key={user.uid}>
 				<span>
 					<strong>ID:</strong> {user.uid}
 				</span><br/>
