@@ -16,9 +16,11 @@ const withAuthentication = Component => {
             //	Listener function to change the local state when
             //	the user state has chaged
             this.listener = this.props.firebase.onAuthUserListener(authUser => {
+                localStorage.setItem('authUser', JSON.stringify(authUser));
                 this.setState({authUser});
             },
             ()=> {
+                localStorage.removeItem('authUser');
                 this.setState({authUser:null});
                 },
             );
