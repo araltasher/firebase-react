@@ -9,9 +9,11 @@ import '../SignUp/Signup.scss';
 
 import * as ROUTES from '../../constants/routes';
 
+
 const SignIn = () => (
 	<div>
 		<SignInForm />
+		<SignInGoogle />
 	</div>
 );
 
@@ -99,10 +101,47 @@ class SignInFormBase extends Component {
 	}
 }
 
+class SignInGoogleBase extends Component {
+	constructor(props){
+		super(props);
+		this.state = {error: null};
+	}
+
+	onSubmit = e => {
+		this.props.firebase.doSignInWithGoogle().then(socialAuthUser => {
+			//	Create a user in Firebase DB as well
+			return this.props.firebase.user(socialAuthUser.user.uid).set({
+				username: socialAuthUser.user.dispalyName,
+				email:socialAuthUser.user.email,
+				roles: [],
+			});
+		}).then(() => {
+			this.setState({ error: null});
+			this.props.history.push(ROUTES.HOME);
+		}).catch(error => {
+			this.setState({error});
+		});
+		e.preventDefault();
+	};
+
+	render() {
+		const { error } = this.state;
+		return (
+			<form onSubmit = {this.onSubmit}>
+				<button type="submit">Sign In with Google</button>
+				{error && <p>{error.message}</p>}
+			</form>
+		);
+	}
+}
+
 
 const SignInForm = compose(withRouter,
 					withFirebase,
 					)(SignInFormBase);
 
+					const SignInGoogle = compose(withRouter,
+						withFirebase,)(SignInGoogleBase);
+
 export default SignIn;
-export {SignInForm};
+export {SignInForm, SignInGoogle};
