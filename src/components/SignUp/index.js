@@ -23,6 +23,9 @@ const INITIAL_STATE = {
 	error: null
 }
 
+const ERROR_CODE_ACCOUNT_EXISTS = 'auth/email-already-in-use';
+const ERROR_MSG_ACCOUNT_EXISTS = 'An account with this email address alreday exists. Try to login with this account instead.';
+
 class SignUpFormBase extends Component {
 
 	constructor(props) {
@@ -50,6 +53,9 @@ class SignUpFormBase extends Component {
 			this.setState({...INITIAL_STATE});
 			this.props.history.push(ROUTES.HOME);
 		}).catch(error => {
+			if(error.code === ERROR_CODE_ACCOUNT_EXISTS){
+				error.message = ERROR_MSG_ACCOUNT_EXISTS;
+			}
 			this.setState({error});
 		});
 

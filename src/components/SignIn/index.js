@@ -16,8 +16,14 @@ const SignIn = () => (
 		<SignInGoogle />
 		<SignInFacebook />
 		<SignInTwitter />
+		<SignInGithub />
 	</div>
 );
+
+//	Extracting the error code and message for
+//	multiple accounts as variables
+const ERROR_CODE_ACCOUNT_EXISTS = 'auth/account-exists-with-different-credential';
+const ERROR_MSG_ACCOUNT_EXISTS = 'An account with an email address to this social account already exists. Try to login from this account instead and associate your social accounts on your personal account page';
 
 const INITIAL_STATE = {
 	email: '',
@@ -121,6 +127,9 @@ class SignInGoogleBase extends Component {
 			this.setState({ error: null});
 			this.props.history.push(ROUTES.HOME);
 		}).catch(error => {
+			if(error.code === ERROR_CODE_ACCOUNT_EXISTS){
+				error.message = ERROR_MSG_ACCOUNT_EXISTS;
+			}
 			this.setState({error});
 		});
 		e.preventDefault();
@@ -156,6 +165,9 @@ class SignInFacebookBase extends Component{
 			this.setState({error:null});
 			this.props.history.push(ROUTES.HOME);
 		}).catch(error => {
+			if(error.code === ERROR_CODE_ACCOUNT_EXISTS){
+				error.message = ERROR_MSG_ACCOUNT_EXISTS;
+			}
 			this.setState({error});
 		});
 
@@ -193,6 +205,9 @@ class SignInTwitterBase extends Component {
 			this.setState({error: null});
 			this.props.history.push(ROUTES.HOME);
 		}).catch(error => {
+			if(error.code === ERROR_CODE_ACCOUNT_EXISTS){
+				error.message = ERROR_MSG_ACCOUNT_EXISTS;
+			}
 			this.setState({error});
 		});
 		e.preventDefault();
@@ -203,6 +218,45 @@ class SignInTwitterBase extends Component {
 		return(
 		<form onSubmit={this.onSubmit}>
 			<button type="submit">Sign In with Twitter</button>
+			{error && <p>{error.message}</p>}
+		</form>
+		);
+	}
+}
+
+class SignInGithubBase extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {error:null};
+	}
+
+	onSubmit = e=> {
+		this.props.firebase.doSignInWithGithub().then(socialAuthUser => {
+		// Create user in Firebase DB
+		return this.props.firebase.user(socialAuthUser.user.uid)
+		.set({
+			username: socialAuthUser.additionalUserInfo.profile.name,
+			email: socialAuthUser.additionalUserInfo.profile.email,
+			roles: []
+			});
+		})
+		.then(() => {
+			this.setState({error: null});
+			this.props.history.push(ROUTES.HOME);
+		}).catch(error => {
+			if(error.code === ERROR_CODE_ACCOUNT_EXISTS){
+				error.message = ERROR_MSG_ACCOUNT_EXISTS;
+			}
+			this.setState({error});
+		});
+		e.preventDefault();
+	}
+
+	render(){
+		const {error} = this.state;
+		return(
+		<form onSubmit={this.onSubmit}>
+			<button type="submit">Sign In with Github</button>
 			{error && <p>{error.message}</p>}
 		</form>
 		);
@@ -220,8 +274,11 @@ const SignInGoogle = compose(withRouter,
 
 const SignInFacebook = compose(withRouter,
 					withFirebase,)(SignInFacebookBase);
+
 const SignInTwitter = compose (withRouter,
-						withFirebase)(SignInTwitterBase);
+					withFirebase)(SignInTwitterBase);
+const SignInGithub = compose (withRouter,
+					withFirebase)(SignInGithubBase);
 
 export default SignIn;
-export {SignInForm, SignInGoogle, SignInFacebook, SignInTwitter};
+export {SignInForm, SignInGoogle, SignInFacebook, SignInTwitter, SignInGithub};

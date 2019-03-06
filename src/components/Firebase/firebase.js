@@ -19,6 +19,7 @@ const config = {
         this.googleProvider = new app.auth.GoogleAuthProvider();
         this.facebookProvider = new app.auth.FacebookAuthProvider();
         this.twitterProvider = new app.auth.TwitterAuthProvider();
+        this.githubProvider = new app.auth.GithubAuthProvider();
     }
     
     //    *** AUTH API ***    //
@@ -30,6 +31,7 @@ const config = {
     doSignInWithGoogle = () => this.auth.signInWithPopup(this.googleProvider);
     doSignInWithFacebook = () => this.auth.signInWithPopup(this.facebookProvider);
     doSignInWithTwitter = () => this.auth.signInWithPopup(this.twitterProvider);
+    doSignInWithGithub = () => this.auth.signInWithPopup(this.githubProvider);
 
     //    *** MERGE AUTH & DB USER API ***    //
     onAuthUserListener = (next, fallback) => this.auth.onAuthStateChanged(authUser => {
