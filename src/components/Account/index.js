@@ -86,6 +86,17 @@ class LoginManagementBase extends React.Component {
 		// Extract the social logins to its own components
 	};
 
+	onDefaltLoginLink = password => {
+		const credential = this.props.firebase.eailAuthProvider.credential(
+			this.props.authUser.email,
+			password
+		);
+
+		this.props.firebase.auth.currentUser.linkAndRetrieveDataWithCredential(credential)
+		.then(this.fetchSignInMethods)
+		.catch(error => this.setState({error}));
+	};
+
 	render() {	
 		const {activeSignInMethods, error} = this.state;
 		const SocialLoginToggle = ({
