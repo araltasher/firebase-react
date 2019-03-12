@@ -11,7 +11,7 @@ ReactDOM.render(
   <FirebaseContext.Provider value={new Firebase()}>
     <App />
   </FirebaseContext.Provider>,
-  document.getElementById('root'),
+  document.getElementById('root')
 );
 
 serviceWorker.unregister();

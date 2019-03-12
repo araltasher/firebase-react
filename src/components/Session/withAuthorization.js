@@ -11,7 +11,7 @@ const withAuthorization = condition => Component => {
     componentDidMount() {
       this.listener = this.props.firebase.onAuthUserListener(
         authUser => {
-          if (!condition(authUser)){
+          if (!condition(authUser)) {
             this.props.history.push(ROUTES.SIGN_IN);
           }
         },
@@ -36,7 +36,7 @@ const withAuthorization = condition => Component => {
 
   return compose(
     withRouter,
-    withFirebase,
+    withFirebase
   )(WithAuthorization);
 };
 
