@@ -61,16 +61,17 @@ class LoginManagementBase extends React.Component {
     this.fetchSignInMethods();
   }
 
-  fetchSignInMethods = () => {
-    this.props.firebase.auth
-      .fetchSignInMethodsForEmail(this.props.authUser.email)
-      .then(activeSignInMethods =>
-        this.setState({
-          activeSignInMethods,
-          error: null,
-        })
-      )
-      .catch(error => this.setState({ error }));
+  fetchSignInMethods = async () => {
+    try {
+      const activeSignInMethods = await this.props.firebase.auth.fetchSignInMethodsForEmail(this.props.authUser.email)
+      this.setState({
+        activeSignInMethods,
+        error: null,
+      });
+    } catch (error) {
+      this.setState({ error });
+    }
+
   };
 
   onSocialLoginLink = provider => {
@@ -89,11 +90,7 @@ class LoginManagementBase extends React.Component {
       .catch(error => this.setState({ error }));
   };
 
-  onDefaultLogin = () => {
-    // Extract the social logins to its own components
-  };
-
-  onDefaltLoginLink = password => {
+  onDefaultLoginLink = password => {
     const credential = this.props.firebase.eailAuthProvider.credential(
       this.props.authUser.email,
       password
@@ -123,11 +120,11 @@ class LoginManagementBase extends React.Component {
           Deactivate {signInMethod.id}
         </button>
       ) : (
-        <button type="button" onClick={() => onLink(signInMethod.provider)}>
-          {' '}
-          Link {signInMethod.id}
-        </button>
-      );
+          <button type="button" onClick={() => onLink(signInMethod.provider)}>
+            {' '}
+            Link {signInMethod.id}
+          </button>
+        );
 
     return (
       <div>
@@ -147,14 +144,14 @@ class LoginManagementBase extends React.Component {
                     onUnlink={this.onUnlink}
                   />
                 ) : (
-                  <SocialLoginToggle
-                    onlyOneLeft={onlyOneLeft}
-                    isEnabled={isEnabled}
-                    signInMethod={signInMethod}
-                    onLink={this.onSocialLoginLink}
-                    onUnlink={this.onUnlink}
-                  />
-                )}
+                    <SocialLoginToggle
+                      onlyOneLeft={onlyOneLeft}
+                      isEnabled={isEnabled}
+                      signInMethod={signInMethod}
+                      onLink={this.onSocialLoginLink}
+                      onUnlink={this.onUnlink}
+                    />
+                  )}
               </li>
             );
           })}
@@ -198,26 +195,26 @@ class DefaultLoginToggle extends React.Component {
         Deactivate {signInMethod.id}
       </button>
     ) : (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="New Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm New Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Link {signInMethod.id}
-        </button>
-      </form>
-    );
+        <form onSubmit={this.onSubmit}>
+          <input
+            name="passwordOne"
+            value={passwordOne}
+            onChange={this.onChange}
+            type="password"
+            placeholder="New Password"
+          />
+          <input
+            name="passwordTwo"
+            value={passwordTwo}
+            onChange={this.onChange}
+            type="password"
+            placeholder="Confirm New Password"
+          />
+          <button disabled={isInvalid} type="submit">
+            Link {signInMethod.id}
+          </button>
+        </form>
+      );
   }
 }
 
